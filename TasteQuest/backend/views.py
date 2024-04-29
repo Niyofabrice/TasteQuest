@@ -12,6 +12,10 @@ rapidapi_host = "map-places.p.rapidapi.com"
 version = "2"
 language = "en-US"
 location_data = {}
+headers = {
+            "X-RapidAPI-Key": api_key2,
+            'X-RapidAPI-Host': rapidapi_host,
+        }
 
 # https://api.tomtom.com/search/2/poiCategories.json?language=en-US&key=*****
 
@@ -36,51 +40,84 @@ def save_location(request):
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
-# def get_places(request):
-#     if request.method == "GET":
-#         url = f"{api_url}{version}/poiCategories.json?language={language}&key={api_key}"
-#         try:
-#             response = requests.get(url)
-#             poi_categories = response.json()["poiCategories"]
-#
-#             # Filter out only restaurant-related categories
-#             restaurant_categories = [category for category in poi_categories if "Food" in category["name"] or "Restaurant" in category["name"]]
-#
-#             # return JSON3
-#             return HttpResponse({"restaurant category": restaurant_categories}, content_type="application/json")
-#         except requests.RequestException as e:
-#             return HttpResponse(f"Error: {e}", status=500)
-
-
-def search_restaurants(request):
+def get_place(request):
     if request.method == 'GET':
-        # Construct the API request URL with parameters
-        api_url = "https://map-places.p.rapidapi.com/nearbysearch/json"
-        headers = {
-            "X-RapidAPI-Key": api_key2,
-            'X-RapidAPI-Host': rapidapi_host,
-        }
+        # Construct API request URL with parameters
+        nearby_search_api_url = "https://map-places.p.rapidapi.com/nearbysearch/json"
         params = {
             "location": location_data["latitude"] + ', ' + location_data["longitude"],
             "radius": "5000",
             # "keyword": 'cruise',
             "type": 'restaurant'
-            # Add any other parameters as needed
         }
 
-        print(params)
-
-        # Make the API request
-        response = requests.get(api_url, headers=headers, params=params)
+        # Make Nearby Search API request
+        response = requests.get(nearby_search_api_url, headers=headers, params=params)
 
         if response.status_code == 200:
             data = response.json()
-            # Extract relevant data from the response
-            restaurants = data.get('results', [])
-            # Pass the data to the template
-            # print(restaurants)
-            result = [print(restaurant["photos"])for restaurant in restaurants]
-            return render(request, 'index.html', {'restaurants': restaurants})
-        else:
-            return HttpResponse(response.status_code)
 
+            # Extract place information
+            for place in data["results"]:
+                # Get the place id
+                place_id = place["place_id"]
+
+                # Define fields to extract
+                fields = [
+                    'current_opening_hours',
+                    'formatted_address',
+                    'formatted_phone_number',
+                    'photos',
+                    'rating',
+                    'reviews',
+                    'user_ratings_total',
+                    'wheelchair_accessible_entrance'
+                ]
+
+                # Get details of the place
+                place_details = get_place_details(place_id, fields)
+
+                # Get photos of the place
+                for photo in place_details["photos"]:
+                    photo_reference = photo["photo_reference"]
+                    maxheight = 400
+                    maxwidth = 400
+
+                    place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
+
+            return HttpResponse("")  # To be worked on
+        else:
+            return HttpResponse(f"Error fetching Places, status code: {response.status_code}")
+
+
+def get_place_details(place_id, fields):
+    # Construct API request URL with parameters
+    place_detail_api_url = "https://map-places.p.rapidapi.com/details/json"
+    details_params = {
+        "place_id": place_id,
+        "fields": fields
+    }
+
+    # Make Place Detail API request
+    details_response = requests.get(place_detail_api_url, headers=headers, params=details_params)
+    if details_response.status_code == 200:
+        details_data = details_response.json()
+
+        return ""   # To be worked on
+    else:
+        return HttpResponse(f"Error fetching Place details, status code: {details_response.status_code}")
+
+
+def get_place_photos(photo_reference, maxheight, maxwidth):
+    # Construct API request URL with parameters
+    place_photo_api_url = "https://map-places.p.rapidapi.com/photo"
+    photo_params = {
+        "photo_reference": photo_reference,
+        "maxheight": maxheight,
+        "maxwidth": maxwidth
+    }
+
+    # Make Place Photo API request
+    photo_response = requests.get(place_photo_api_url, headers=headers, params=photo_params)
+    # photo_response contains raw image data, so we have to save it into a JPG file
+    return HttpResponse("Done!")  # To be worked on
