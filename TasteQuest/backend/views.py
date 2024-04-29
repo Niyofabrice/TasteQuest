@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import requests
+import json
 
 # Create your views here.
 
@@ -55,12 +56,13 @@ def get_place(request):
         response = requests.get(nearby_search_api_url, headers=headers, params=params)
 
         if response.status_code == 200:
-            data = response.json()
+            data_str = response.content.decode('utf-8')  # Decode byte data to string
+            data_dict = json.loads(data_str)  # Parse JSON string to dictionary
 
             # Extract place information
-            for place in data["results"]:
+            for place in data_dict.get('results', []):
                 # Get the place id
-                place_id = place["place_id"]
+                place_id = place.get("place_id")
 
                 # Define fields to extract
                 fields = [
@@ -75,19 +77,23 @@ def get_place(request):
                 ]
 
                 # Get details of the place
-                place_details = get_place_details(place_id, fields)
+                place_details = get_place_details(place_id, fields='photos, rating, reviews')
 
                 # Get photos of the place
-                for photo in place_details["photos"]:
-                    photo_reference = photo["photo_reference"]
-                    maxheight = 400
-                    maxwidth = 400
+                # for photo in place_details["photos"]:
+                #     photo_reference = photo["photo_reference"]
+                #     maxheight = 400
+                #     maxwidth = 400
+                #
+                #     place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
 
-                    place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
+                # print(place_details)
 
-            return HttpResponse("")  # To be worked on
+                return HttpResponse(place_details)  # To be worked on
         else:
             return HttpResponse(f"Error fetching Places, status code: {response.status_code}")
+
+    return HttpResponse("Invalid request method")
 
 
 def get_place_details(place_id, fields):
@@ -101,11 +107,13 @@ def get_place_details(place_id, fields):
     # Make Place Detail API request
     details_response = requests.get(place_detail_api_url, headers=headers, params=details_params)
     if details_response.status_code == 200:
-        details_data = details_response.json()
+        data_str = details_response.content.decode('utf-8')  # Decode byte data to string
+        data_dict = json.loads(data_str)  # Parse JSON string to dictionary
 
-        return ""   # To be worked on
+        return data_dict   # Return place details
     else:
-        return HttpResponse(f"Error fetching Place details, status code: {details_response.status_code}")
+        # Return error message
+        return {'error': f"Error fetching Place details, status code: {details_response.status_code}"}
 
 
 def get_place_photos(photo_reference, maxheight, maxwidth):
@@ -119,5 +127,10 @@ def get_place_photos(photo_reference, maxheight, maxwidth):
 
     # Make Place Photo API request
     photo_response = requests.get(place_photo_api_url, headers=headers, params=photo_params)
-    # photo_response contains raw image data, so we have to save it into a JPG file
-    return HttpResponse("Done!")  # To be worked on
+
+    if photo_response.status_code == 200:
+        # Return the raw image data
+        return photo_response.content
+    else:
+        # Return an error message
+        return {'error': f"Error fetching place photo, status code: {photo_response.status_code}"}
