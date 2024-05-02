@@ -22,7 +22,7 @@ headers = {
 
 
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 
 
 def save_location(request):
@@ -63,45 +63,39 @@ def get_place(request):
             for place in data_dict.get('results', []):
                 # Get the place id
                 place_id = place.get("place_id")
+                print(place_id)
 
                 # Define fields to extract
-                fields = [
-                    'current_opening_hours',
-                    'formatted_address',
-                    'formatted_phone_number',
-                    'photos',
-                    'rating',
-                    'reviews',
-                    'user_ratings_total',
-                    'wheelchair_accessible_entrance'
-                ]
+                fields = ['current_opening_hours, formatted_address, formatted_phone_number, photos, rating, reviews, user_ratings_total, wheelchair_accessible_entrance']
 
                 # Get details of the place
-                place_details = get_place_details(place_id, fields='photos, rating, reviews')
+                place_details = get_place_details(place_id)
+                print(place_details.get("result"))
 
-                # Get photos of the place
-                # for photo in place_details["photos"]:
-                #     photo_reference = photo["photo_reference"]
-                #     maxheight = 400
-                #     maxwidth = 400
+                # if place_details is not None:
+                #     # Get photos of the place
+                #     photos = place_details.get("photos")
+                #     if photos is not None:
+                #         for photo in photos:
+                #             photo_reference = photo.get("photo_reference")
+                #             maxheight = 400
+                #             maxwidth = 400
                 #
-                #     place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
+                #             # Get place photos
+                #             place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
 
-                # print(place_details)
-
-                return HttpResponse(place_details)  # To be worked on
+            return JsonResponse(place_details.get("result"))  # To be worked on
         else:
             return HttpResponse(f"Error fetching Places, status code: {response.status_code}")
 
     return HttpResponse("Invalid request method")
 
 
-def get_place_details(place_id, fields):
+def get_place_details(place_id):
     # Construct API request URL with parameters
     place_detail_api_url = "https://map-places.p.rapidapi.com/details/json"
     details_params = {
         "place_id": place_id,
-        "fields": fields
     }
 
     # Make Place Detail API request
@@ -113,7 +107,7 @@ def get_place_details(place_id, fields):
         return data_dict   # Return place details
     else:
         # Return error message
-        return {'error': f"Error fetching Place details, status code: {details_response.status_code}"}
+        return None
 
 
 def get_place_photos(photo_reference, maxheight, maxwidth):
