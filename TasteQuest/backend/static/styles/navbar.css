@@ -1,0 +1,88 @@
+/* Navbar */
+.navbar {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  /* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+  
+.icon {
+    font-size: 24px; /* Adjust as needed */
+    color: #8a2be2;
+}
+  
+.text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 20px; /* Adjust as needed */
+    color: #333333;
+}
+  
+  /* Navbar Unordered List */
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+  
+  /* Navbar List Items */
+.navbar ul li {
+    margin-right: 20px;
+}
+  
+  /* Navbar Links */
+.navbar ul li a {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+  
+  /* Navbar Links on Hover */
+.navbar ul li a:hover {
+    background-color: #444; /* Dark gray */
+    color: #fff;
+}
+
+  /* Auth Buttons */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+  
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+  
+.btn-outline-dark {
+    color: #333;
+    border: 1px solid #333;
+}
+  
+.btn-outline-dark:hover {
+    background-color: #333;
+    color: #fff;
+}
+  
+.btn-dark {
+    background-color: #333;
+    color: #fff;
+}
+  
+.btn-dark:hover {
+    background-color: #555;
+}

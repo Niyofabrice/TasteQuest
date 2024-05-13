@@ -1,17 +1,17 @@
-{% extends 'index.html' %}
-
-{% block navbar%}
+{% block navbar %}
     <div>
-        <nav class="navbar navbar-dark bg-dark">
-          <!-- Navbar content -->
-        </nav>
-
-        <nav class="navbar navbar-dark bg-primary">
-          <!-- Navbar content -->
-        </nav>
-
-        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-          <!-- Navbar content -->
+        <nav class="navbar">
+            <div class="logo">
+                <span class="icon">&#127860;</span> <!-- Unicode for fork icon -->
+                <span class="text">TasteQuest</span>
+            </div>
+            <ul>
+                {% include "searchbar.html" %}
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline-dark">Sign In</a>
+                <a href="#" class="btn btn-dark">Sign Up</a>
+            </div>
         </nav>
     </div>
-{% endblock %}
+{% endblock navbar %}

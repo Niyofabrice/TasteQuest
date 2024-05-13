@@ -1,20 +1,32 @@
-{% extends 'index.html' %}
+{% load static %}
+{% block cards %}
 
-{% block cards%}
-  <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
+
+<div class="cards-container">
+  {% for place in places %}
+  <div class="card">
+    <img src="{% static 'images/pexels-pixabay-262047.jpg' %}" class="card-img-top" alt="...">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
+      <h5 class="card-title">{{place.name}}</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
+      <div class="card-details">
+        <div class="location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>123 Main Street, City</span>
+        </div>
+        <div class="reviews">
+          <i class="fas fa-star"></i>
+          <span>4.5 (120 reviews)</span>
+        </div>
+        <div class="phone">
+          <i class="fas fa-phone"></i>
+          <span>(123) 456-7890</span>
+        </div>
+      </div>
+      <a href="#" class="btn btn-primary">View Place</a>
     </div>
   </div>
-{% endblock %}
+  {% endfor %}
+</div>
+
+{% endblock cards %}

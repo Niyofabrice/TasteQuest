@@ -1,0 +1,21 @@
+{% load static %}
+{% block hero %}
+
+<section class="hero-section">
+    <h1 class="animated-text"></h1>
+</section>
+
+<script>
+    const animatedText = document.querySelector('.animated-text');
+    const text = "Discover personalized restaurant recommendations and local favorites, tailored just for you";
+
+    animatedText.textContent = text;
+
+    window.addEventListener('load', () => {
+    animatedText.style.animation = 'none';
+    setTimeout(() => {
+        animatedText.style.animation = null;
+    }, 100);
+    });
+</script>
+{% endblock hero %}

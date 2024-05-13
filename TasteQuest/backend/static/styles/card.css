@@ -1,0 +1,100 @@
+/* Card */
+.card {
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition on hover */
+  }
+  
+  .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  }
+  
+  /* Card Image */
+  .card-img-overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    color: #fff; /* White text */
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    opacity: 0; /* Initially hidden */
+  }
+  
+  .card:hover .card-img-overlay {
+    opacity: 1; /* Show overlay on hover */
+    width: 110%;
+  }
+
+.card-img-top {
+    border-top-left-radius: 8px; /* Rounded top-left corner */
+    border-top-right-radius: 8px; /* Rounded top-right corner */
+    max-width: 100%; /* Limit the image width to its container */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  
+  /* Card Title */
+  .card-title {
+    font-size: 20px; /* Adjust font size as desired */
+    font-weight: bold; /* Bold title */
+    color: #333; /* Dark text color */
+  }
+
+
+  .card-body {
+    padding: 20px; /* Add padding to the card body */
+    background-color: #f8f9fa; /* Set background color */
+    color: #333; /* Set font color */
+    font-size: 16px; /* Set font size */
+  }
+
+
+  .cards-container {
+    margin: 20px;
+    display: flex;
+    gap: 50px;
+  }
+
+  .card img {
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth scaling */
+}
+
+.card img:hover {
+    transform: scale(1.01); /* Scale the image by 10% on hover */
+    border-bottom-left-radius: 8px; /* Rounded top-left corner */
+    border-bottom-right-radius: 8px; /* Rounded top-right corner */
+
+}
+
+
+/* Card Details */
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .card-details div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-details div i {
+    color: #444;
+    margin-right: 0.5rem;
+  }
+  
+  /* Button */
+.btn-primary {
+    background-color: #444; /* Slate blue color from navigation links */
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #222; /* Darker shade of slate blue */
+  }

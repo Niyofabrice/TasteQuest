@@ -22,7 +22,17 @@ headers = {
 
 
 def home(request):
-    return render(request, 'base.html')
+    places = [
+        {"name": "place 1", "description": "description for place 1"},
+        {"name": "place 2", "description": "description for place 2"},
+        # Add more card data as needed
+    ]
+
+    context = {
+        "places": places,
+    }
+
+    return render(request, 'base.html', context)
 
 
 def save_location(request):

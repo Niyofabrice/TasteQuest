@@ -1,7 +1,62 @@
-{% include 'index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get User Location</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/card.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/searchbar.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/herosection.css' %}">
+</head>
+<body>
 
-{% block navbar %}
-{% endblock %}
+    {% include "navbar.html" %}
 
-{% block cards %}
-{% endblock %}
+    {% include "herosection.html" %}
+    
+    
+
+   {% include "card.html" with places=places %}
+
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    {% include "footer.html" %}
+
+    <!-- Script to retrieve user location when the page loads -->
+
+    <script>
+        window.addEventListener('load', function() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    // Get CSRF token from the DOM
+                    var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Send location data to server using AJAX
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/save_location/', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken); // Set CSRF token in the request header
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            console.log('Location saved successfully');
+                        } else {
+                            console.error('Error saving location:', xhr.statusText);
+                        }
+                    };
+                    xhr.send('latitude=' + latitude + '&longitude=' + longitude);
+                });
+            } else {
+                console.error("Geolocation is not supported by this browser");
+            }
+        });
+    </script>
+</body>
+</html>
