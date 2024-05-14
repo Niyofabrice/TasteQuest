@@ -5,10 +5,14 @@
 <div class="cards-container">
   {% for place in places %}
   <div class="card">
-    <img src="{% static 'images/pexels-pixabay-262047.jpg' %}" class="card-img-top" alt="...">
+    <img src="{% static place.image %}" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{place.name}}</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <div class="restaurant-details">
+        <span class="cuisine">{{place.cuisine}}</span>
+        <span class="price-range">${{place.price_range}}</span>
+      </div>
+      <p class="card-text">{{place.description}}</p>
       <div class="card-details">
         <div class="location">
           <i class="fas fa-map-marker-alt"></i>
@@ -23,7 +27,9 @@
           <span>(123) 456-7890</span>
         </div>
       </div>
-      <a href="#" class="btn btn-primary">View Place</a>
+      <div class="btncls">
+        <a href="#" class="btn btn-primary">View Place</a>
+      </div>
     </div>
   </div>
   {% endfor %}

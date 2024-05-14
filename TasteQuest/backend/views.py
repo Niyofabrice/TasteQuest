@@ -23,8 +23,10 @@ headers = {
 
 def home(request):
     places = [
-        {"name": "place 1", "description": "description for place 1"},
-        {"name": "place 2", "description": "description for place 2"},
+        {"name": "The Rustic Grill", "description": "Nestled in the heart of a charming neighborhood, The Rustic Grill offers a cozy and inviting atmosphere where the flavors of farm-fresh ingredients shine. With a focus on locally sourced produce and meats, their menu features mouthwatering grilled dishes and hearty comfort foods, all expertly prepared with a rustic touch.", "image": "images/pexels-vedanti-66315-239975.jpg", "cuisine": "American, Grill", "price_range": 15},
+        {"name": "Pasta Amore", "description": "Indulge in the authentic flavors of Italy at Pasta Amore, where every dish is a labor of love. With recipes passed down through generations, their chefs masterfully prepare homemade pasta and sauces using only the finest ingredients. From classic favorites like spaghetti carbonara to innovative creations, each bite promises a delightful journey through the rustic and rich flavors of the Italian countryside.", "image": "images/pexels-thomas-balabaud-735585-1579739.jpg", "cuisine": "Italian", "price_range": 35},
+        {"name": "Sushi Sakura", "description": "Step into the elegantly minimalist ambiance of Sushi Sakura and embark on a culinary journey through the finest in Japanese cuisine. Their skilled sushi chefs meticulously craft each roll and nigiri, showcasing the freshest seafood and a dedication to authentic flavors. Complemented by a selection of warm and cold small plates, Sushi Sakura offers a true taste of Japan.", "image": "images/pexels-reneasmussen-1581384.jpg", "cuisine": "Japanese", "price_range": 25},
+        {"name": "Spice Bazaar", "description": "Embark on a flavorful adventure at Spice Bazaar, where the vibrant aromas and bold spices of Middle Eastern and Mediterranean cuisines come together in a tantalizing fusion. From succulent kebabs to fragrant tagines and creamy hummus, each dish is a celebration of exotic ingredients and time-honored cooking techniques, transporting you to the bustling markets of faraway lands.", "image": "images/pexels-pixabay-262047.jpg", "cuisine": "Indian", "price_range": 20},
         # Add more card data as needed
     ]
 
