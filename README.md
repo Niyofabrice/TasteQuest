@@ -29,3 +29,7 @@ As I launch my project into the world, I'm reminded of that fateful evening when
 ## Installation
 checkout the deployed page
 [here](http://nifabrice.pythonanywhere.com/)
+## Screenshots
+
+![Project_ScreenShot jpg](https://github.com/Niyofabrice/TasteQuest/assets/125447673/ba8dc858-0db8-4ae8-bc0c-f0bd8bedcbd9)
+
