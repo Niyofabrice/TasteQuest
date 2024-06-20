@@ -10,6 +10,7 @@
     border: 1px solid #ddd;
     border-radius: 4px 0 0 4px;
     outline: none;
+    width: 500px;
   }
   
   .search-btn {
@@ -21,3 +22,33 @@
     border-radius: 0 4px 4px 0;
     cursor: pointer;
   }
+
+
+  @media screen and (max-width: 912px) {
+
+    .search-input {
+      width: 250px;
+      font-size: 14px;
+    }
+    
+}
+
+
+@media screen and (max-width: 647px) {
+
+  .search-input {
+    width: 150px;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 6px 16px;
+  }
+  
+}
+
+@media screen and (max-width: 540px) {
+
+  .search-container {
+    display: none;
+  }
+    
+}

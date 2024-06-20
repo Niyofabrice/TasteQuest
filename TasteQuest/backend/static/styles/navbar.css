@@ -86,3 +86,32 @@
 .btn-dark:hover {
     background-color: #555;
 }
+
+@media screen and (max-width: 912px) {
+
+    .btn {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+    
+}
+
+
+@media screen and (max-width: 647px) {
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    
+}
+
+
+@media screen and (max-width: 532px) {
+
+    .text {
+        font-size: 14px;
+    }
+    
+}

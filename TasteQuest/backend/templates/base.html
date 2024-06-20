@@ -35,6 +35,7 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
+                    console.log(latitude, longitude);
 
                     // Get CSRF token from the DOM
                     var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;

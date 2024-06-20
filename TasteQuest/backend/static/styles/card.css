@@ -77,29 +77,28 @@
 
 
 .card img:hover {
-    transform: scale(1.01); /* Scale the image by 10% on hover */
-    border-bottom-left-radius: 8px; /* Rounded top-left corner */
-    border-bottom-right-radius: 8px; /* Rounded top-right corner */
-
+  transform: scale(1.01); /* Scale the image by 10% on hover */
+  border-bottom-left-radius: 8px; /* Rounded top-left corner */
+  border-bottom-right-radius: 8px; /* Rounded top-right corner */
 }
 
 
 /* Card Details */
 .card-details {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
   
-  .card-details div {
-    display: flex;
-    align-items: center;
-  }
+.card-details div {
+  display: flex;
+  align-items: center;
+}
   
-  .card-details div i {
-    color: #444;
-    margin-right: 0.5rem;
-  }
+.card-details div i {
+  color: #444;
+  margin-right: 0.5rem;
+}
   
   /* Button */
 .btncls {
@@ -147,4 +146,23 @@
 .price-range {
   background-color: #333;
   color: #fff;
+}
+
+
+@media screen and (max-width: 1200px) {
+  .card {
+    width: 46%;
+    font-size: 50px; /* Set font size */
+  }
+
+  .card img {
+    height: 270px; /* Adjust this value to your desired height */
+  }
+}
+
+
+@media screen and (max-width: 970px) {
+  .card {
+    width: 100%;
+  }
 }

@@ -46,6 +46,7 @@ def save_location(request):
         # Process location data (e.g., save to database)
         location_data['latitude'] = latitude
         location_data['longitude'] = longitude
+        print(location_data)
 
         # Optionally, send a response back to the client
         return JsonResponse({'Success': 'location saved successfully'}, status=200)
@@ -57,6 +58,7 @@ def get_place(request):
     if request.method == 'GET':
         # Construct API request URL with parameters
         nearby_search_api_url = "https://map-places.p.rapidapi.com/nearbysearch/json"
+        print(location_data)
         params = {
             "location": location_data["latitude"] + ', ' + location_data["longitude"],
             "radius": "5000",
