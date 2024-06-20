@@ -142,3 +142,20 @@ def get_place_photos(photo_reference, maxheight, maxwidth):
     else:
         # Return an error message
         return {'error': f"Error fetching place photo, status code: {photo_response.status_code}"}
+
+
+def user_signup(request):
+    """Handle user signup"""
+    return render(request, "signup.html")
+
+def user_login(request):
+    """Handle user login"""
+    return render(request, "login.html")
+
+def user_forgot_password(request):
+    return render(request, "forgot_password.html")
+
+def user_logout(request):
+    """Handle user logout"""
+    pass
+

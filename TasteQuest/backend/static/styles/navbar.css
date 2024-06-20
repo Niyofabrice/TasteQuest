@@ -8,6 +8,10 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.navbar a {
+    text-decoration: none;
+}
   
   /* Logo */
 .logo {

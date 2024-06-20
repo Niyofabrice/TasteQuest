@@ -1,0 +1,30 @@
+{% load static %}
+{% block signup %}
+
+{% include "navbar.html" %}
+<title>Sign Up</title>
+<link rel="stylesheet" href="{% static 'styles/signup.css' %}">
+
+<div class="form-container">
+    <h2>Create an Account</h2>
+    <p class="header-text">Join us today! Fill out the form below to get started.</p>
+    <hr>
+    <form id="signup-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+  
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+  
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+  
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+  
+      <button type="submit">Sign Up</button>
+    </form>
+    <p class="form-footer">Already have an account? <a href="{% url 'login' %}">Log in here</a></p>
+  </div>
+
+{% endblock signup %}

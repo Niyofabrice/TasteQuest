@@ -1,16 +1,24 @@
+{% load static %}
 {% block navbar %}
+    <link rel="stylesheet" href="{% static 'styles/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/searchbar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <div>
         <nav class="navbar">
             <div class="logo">
-                <span class="icon">&#127860;</span> <!-- Unicode for fork icon -->
-                <span class="text">TasteQuest</span>
+                <a href="{% url 'home' %}">
+                    <span class="icon">&#127860;</span> <!-- Unicode for fork icon -->
+                    <span class="text">TasteQuest</span>
+                </a>
             </div>
-            <ul>
-                {% include "searchbar.html" %}
-            </ul>
+            {% if User %}
+                <ul>
+                    {% include "searchbar.html" %}
+                </ul>
+            {% endif %}
             <div class="auth-buttons">
-                <a href="#" class="btn btn-outline-dark">Sign In</a>
-                <a href="#" class="btn btn-dark">Sign Up</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-dark">Sign In</a>
+                <a href="{% url 'signup' %}" class="btn btn-dark">Sign Up</a>
             </div>
         </nav>
     </div>
