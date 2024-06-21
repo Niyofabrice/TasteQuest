@@ -3,24 +3,29 @@
 
 <title>Sign In</title>
 
-{% include "navbar.html" %}
 <link rel="stylesheet" href="{% static 'styles/login.css' %}">
 
 <div class="form-container">
-    <h2>Welcome Back</h2>
-    <p class="header-text">Please enter your credentials to access your account.</p>
-    <hr>
-    <form id="login-form">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-  
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-  
-      <button type="submit">Log In</button>
-    </form>
-    <p class="form-footer">Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
-    <p class="form-footer"><a href="{% url 'forgot-password' %}">Forgot your password?</a></p>
-  </div>
+  {% if error %}
+    <div class="message error">
+      <p>{{ error }}</p>
+    </div>
+  {% endif %}
+  <h2>Welcome Back</h2>
+  <p class="header-text">Please enter your credentials to access your account.</p>
+  <hr>
+  <form id="login-form" method="POST">
+    {% csrf_token %}
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{email}}" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Log In</button>
+  </form>
+  <p class="form-footer">Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+  <p class="form-footer"><a href="{% url 'forgot-password' %}">Forgot your password?</a></p>
+</div>
 
 {% endblock login %}

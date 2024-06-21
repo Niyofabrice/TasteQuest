@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 import requests
 import json
 
@@ -146,16 +149,55 @@ def get_place_photos(photo_reference, maxheight, maxwidth):
 
 def user_signup(request):
     """Handle user signup"""
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        confirm_password = request.POST["confirm-password"]
+        if password == confirm_password:
+            try:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                login(request, user)
+                return redirect('home')
+            except:
+                print("username taken")
+        else:
+            context = {
+                "message": "Passwords do not match",
+                "username": username,
+                "email": email
+            }
+            return render(request, "signup.html", context)
+
     return render(request, "signup.html")
 
 def user_login(request):
     """Handle user login"""
-    return render(request, "login.html")
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
+        try:
+            user = User.objects.all().filter(email=email).first()
+            if user is not None:
+                authenticated_user = authenticate(username=user.username, password=password)
+                if authenticated_user is not None:
+                    login(request, authenticated_user)
+                    return redirect('home')
+                else:
+                    return render(request, 'login.html', {"error": "Incorrect Password", "email": email})
+            else:
+                return render(request, 'login.html', {"error": "Email Not Found", "email": email})
+        except Exception as e:
+            return render(request, 'login.html', {"error": "An Error Occured"})
+    return render(request, 'login.html')
+    
 
 def user_forgot_password(request):
     return render(request, "forgot_password.html")
 
 def user_logout(request):
     """Handle user logout"""
-    pass
+    logout(request)
+    return redirect('login')
 

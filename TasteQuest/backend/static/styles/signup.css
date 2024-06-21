@@ -6,28 +6,28 @@
 form {
     max-width: 350px;
     padding: 20px;
-  }
+}
 
   
-  label {
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-  }
+}
   
-  input[name="username"],
-  input[name="email"],
-  input[name="password"],
-  input[name="confirm-password"] {
+input[name="username"],
+input[name="email"],
+input[name="password"],
+input[name="confirm-password"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-  }
+}
   
-  button[type="submit"] {
+button[type="submit"] {
     width: 100%;
     background-color: #444;
     font-size: 16px;
@@ -38,15 +38,15 @@ form {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-  }
+}
 
-  button[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: #666;
-  }
+}
 
 
 
-  .form-container {
+.form-container {
     max-width: 350px;
     margin: 0 auto;
     margin-top: 50px;
@@ -55,47 +55,66 @@ form {
     border-radius: 5px;
     background-color: #f9f9f9;
     transition: box-shadow 0.3s ease;
-  }
+}
 
-  .form-container:hover {
+.form-container:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
+}
   
-  h2 {
+h2 {
     text-align: center;
     color: #333;
     font-size: 28px;
     font-weight: bold;
-  }
+}
   
-  p {
-    text-align: center;
-    color: #111;
-    margin-bottom: 20px;
-  }
+p {
+  text-align: center;
+  color: #111;
+  margin-bottom: 20px;
+}
 
-  .header-text {
+.header-text {
     color: #777;
     font-size: 14px;
     font-weight: bold;
-  }
+}
   
-  .form-footer {
+.form-footer {
     margin-top: 15px;
     font-size: 0.9em;
-  }
+}
   
-  p > a {
+p > a {
     color: #999;
     text-decoration: none;
     font-weight: bold;
-  }
+}
   
-  p > a:hover {
+p > a:hover {
     text-decoration: underline;
-  }
+}
 
-  hr {
+hr {
     margin-left: 20px;
     width: 300px;
-  }
+}
+
+.message {
+  display: block;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.message > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  font-family: 'Roboto', sans-serif;
+}

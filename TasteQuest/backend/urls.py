@@ -7,6 +7,6 @@ urlpatterns = [
     path('save_location/', save_location, name="save_location"),
     path('signup/', user_signup, name="signup"),
     path('login/', user_login, name="login"),
-    path('forgot_password', user_forgot_password, name="forgot-password"),
+    path('forgot_password/', user_forgot_password, name="forgot-password"),
     path('logout/', user_logout, name="logout")
 ]
