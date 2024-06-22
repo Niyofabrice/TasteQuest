@@ -7,7 +7,7 @@ def get_places_nearby(latitude, longitude, query='', radius=1000):
     cached_result = cache.get(cache_key)
     if cached_result:
         return cached_result
-    endpoint_url = 'https://api.foursquare.com/v2/places/search'
+    endpoint_url = 'https://api.foursquare.com/v3/places/nearby'
     params = {
         'll': f'{latitude},{longitude}',
         'query': query,
@@ -18,16 +18,18 @@ def get_places_nearby(latitude, longitude, query='', radius=1000):
     }
     response = requests.get(endpoint_url, params=params)
     places = response.json().get('response', {}).get('places', [])
+    print(places)
 
     # Enhance place data with photos
     for place in places:
         place['photos'] = get_place_photos(place['id'])
 
     cache.set(cache_key, response.json(), timeout=3600)  # Cache for 1 hour
+    print(response.json)
     return response.json()
 
 def get_place_photos(place_id, max_photos=5):
-    cache_key = f"venue_photos_{venue_id}"
+    cache_key = f"place_photos_{place_id}"
     cached_photos = cache.get(cache_key)
     if cached_photos:
         return cached_photos

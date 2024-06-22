@@ -9,36 +9,30 @@ import json
 
 # Create your views here.
 
-#api_key = "FBfcGVZBIxMBGzTztAhR0VmEdrIcCxdn"
-#api_key2 = "33392eacd2msha34644b78dc6760p185cecjsn3c8e231a16cf"
-#rapidapi_host = "map-places.p.rapidapi.com"
+api_key = "FBfcGVZBIxMBGzTztAhR0VmEdrIcCxdn"
+api_key2 = "33392eacd2msha34644b78dc6760p185cecjsn3c8e231a16cf"
+rapidapi_host = "map-places.p.rapidapi.com"
 
-# api_url = "https://api.tomtom.com/search/"
-#version = "2"
-#language = "en-US"
+categories = ["10000","13000","14000"]
+
+fields = ["fsq_id","name","geocodes","location","categories","closed_bucket","description","tel","email","website",
+        "social_media","hours","hours_popular","rating","popularity","price","menu","date_closed","photos","tastes"]
+
+api_url = "https://api.tomtom.com/search/"
+version = "2"
+language = "en-US"
 location_data = {}
-#headers = {
-#            "X-RapidAPI-Key": api_key2,
-#            'X-RapidAPI-Host': rapidapi_host,
-#       }
+headers = {
+            "X-RapidAPI-Key": api_key2,
+            'X-RapidAPI-Host': rapidapi_host,
+       }
 
 # https://api.tomtom.com/search/2/poiCategories.json?language=en-US&key=*****
 
 
 def home(request):
-    places = [
-        {"name": "The Rustic Grill", "description": "Nestled in the heart of a charming neighborhood, The Rustic Grill offers a cozy and inviting atmosphere where the flavors of farm-fresh ingredients shine. With a focus on locally sourced produce and meats, their menu features mouthwatering grilled dishes and hearty comfort foods, all expertly prepared with a rustic touch.", "image": "images/pexels-vedanti-66315-239975.jpg", "cuisine": "American, Grill", "price_range": 15},
-        {"name": "Pasta Amore", "description": "Indulge in the authentic flavors of Italy at Pasta Amore, where every dish is a labor of love. With recipes passed down through generations, their chefs masterfully prepare homemade pasta and sauces using only the finest ingredients. From classic favorites like spaghetti carbonara to innovative creations, each bite promises a delightful journey through the rustic and rich flavors of the Italian countryside.", "image": "images/pexels-thomas-balabaud-735585-1579739.jpg", "cuisine": "Italian", "price_range": 35},
-        {"name": "Sushi Sakura", "description": "Step into the elegantly minimalist ambiance of Sushi Sakura and embark on a culinary journey through the finest in Japanese cuisine. Their skilled sushi chefs meticulously craft each roll and nigiri, showcasing the freshest seafood and a dedication to authentic flavors. Complemented by a selection of warm and cold small plates, Sushi Sakura offers a true taste of Japan.", "image": "images/pexels-reneasmussen-1581384.jpg", "cuisine": "Japanese", "price_range": 25},
-        {"name": "Spice Bazaar", "description": "Embark on a flavorful adventure at Spice Bazaar, where the vibrant aromas and bold spices of Middle Eastern and Mediterranean cuisines come together in a tantalizing fusion. From succulent kebabs to fragrant tagines and creamy hummus, each dish is a celebration of exotic ingredients and time-honored cooking techniques, transporting you to the bustling markets of faraway lands.", "image": "images/pexels-pixabay-262047.jpg", "cuisine": "Indian", "price_range": 20},
-        # Add more card data as needed
-    ]
 
-    context = {
-        "places": places,
-    }
-
-    return render(request, 'base.html', context)
+    return render(request, 'base.html')
 
 
 def save_location(request):
@@ -53,60 +47,10 @@ def save_location(request):
         print(location_data)
 
         # Optionally, send a response back to the client
+
         return JsonResponse({'Success': 'location saved successfully'}, status=200)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-
-def get_place(request):
-    if request.method == 'GET':
-        # Construct API request URL with parameters
-        nearby_search_api_url = "https://map-places.p.rapidapi.com/nearbysearch/json"
-        print(location_data)
-        params = {
-            "location": location_data["latitude"] + ', ' + location_data["longitude"],
-            "radius": "5000",
-            # "keyword": 'cruise',
-            "type": 'restaurant'
-        }
-
-        # Make Nearby Search API request
-        response = requests.get(nearby_search_api_url, headers=headers, params=params)
-
-        if response.status_code == 200:
-            data_str = response.content.decode('utf-8')  # Decode byte data to string
-            data_dict = json.loads(data_str)  # Parse JSON string to dictionary
-
-            # Extract place information
-            for place in data_dict.get('results', []):
-                # Get the place id
-                place_id = place.get("place_id")
-                print(place_id)
-
-                # Define fields to extract
-                fields = ['current_opening_hours, formatted_address, formatted_phone_number, photos, rating, reviews, user_ratings_total, wheelchair_accessible_entrance']
-
-                # Get details of the place
-                place_details = get_place_details(place_id)
-                print(place_details.get("result"))
-
-                # if place_details is not None:
-                #     # Get photos of the place
-                #     photos = place_details.get("photos")
-                #     if photos is not None:
-                #         for photo in photos:
-                #             photo_reference = photo.get("photo_reference")
-                #             maxheight = 400
-                #             maxwidth = 400
-                #
-                #             # Get place photos
-                #             place_photos = get_place_photos(photo_reference, maxheight, maxwidth)
-
-            return JsonResponse(place_details.get("result"))  # To be worked on
-        else:
-            return HttpResponse(f"Error fetching Places, status code: {response.status_code}")
-
-    return HttpResponse("Invalid request method")
 
 
 def get_place_details(place_id):
@@ -153,9 +97,10 @@ def recommend_places(request):
     longitude = location_data["longitude"]
     if latitude and longitude:
         places = get_places_nearby(latitude, longitude)
+        print(places)
         # Process and filter results as needed
-        return render(request, 'recommendations.html', {'places': places})
-    return render(request, 'location_form.html')
+        return render(request, 'card.html', {'places': places})
+    return render(request, 'base.html')
 
 
 def user_signup(request):

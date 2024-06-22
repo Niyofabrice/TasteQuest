@@ -5,7 +5,7 @@
 <div class="cards-container">
   {% for place in places %}
   <div class="card">
-    <img src="{% static place.image %}" class="card-img-top" alt="...">
+    <img src="{{place.photo_url}}" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{place.name}}</h5>
       <div class="restaurant-details">
@@ -16,7 +16,7 @@
       <div class="card-details">
         <div class="location">
           <i class="fas fa-map-marker-alt"></i>
-          <span>123 Main Street, City</span>
+          <span>{{place.location.address}}</span>
         </div>
         <div class="reviews">
           <i class="fas fa-star"></i>
