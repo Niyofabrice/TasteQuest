@@ -3,23 +3,24 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .utils import get_places_nearby
 import requests
 import json
 
 # Create your views here.
 
-api_key = "FBfcGVZBIxMBGzTztAhR0VmEdrIcCxdn"
-api_key2 = "33392eacd2msha34644b78dc6760p185cecjsn3c8e231a16cf"
-rapidapi_host = "map-places.p.rapidapi.com"
+#api_key = "FBfcGVZBIxMBGzTztAhR0VmEdrIcCxdn"
+#api_key2 = "33392eacd2msha34644b78dc6760p185cecjsn3c8e231a16cf"
+#rapidapi_host = "map-places.p.rapidapi.com"
 
 # api_url = "https://api.tomtom.com/search/"
-version = "2"
-language = "en-US"
+#version = "2"
+#language = "en-US"
 location_data = {}
-headers = {
-            "X-RapidAPI-Key": api_key2,
-            'X-RapidAPI-Host': rapidapi_host,
-        }
+#headers = {
+#            "X-RapidAPI-Key": api_key2,
+#            'X-RapidAPI-Host': rapidapi_host,
+#       }
 
 # https://api.tomtom.com/search/2/poiCategories.json?language=en-US&key=*****
 
@@ -145,6 +146,16 @@ def get_place_photos(photo_reference, maxheight, maxwidth):
     else:
         # Return an error message
         return {'error': f"Error fetching place photo, status code: {photo_response.status_code}"}
+
+
+def recommend_places(request):
+    latitude = location_data["latitude"]
+    longitude = location_data["longitude"]
+    if latitude and longitude:
+        places = get_places_nearby(latitude, longitude)
+        # Process and filter results as needed
+        return render(request, 'recommendations.html', {'places': places})
+    return render(request, 'location_form.html')
 
 
 def user_signup(request):
