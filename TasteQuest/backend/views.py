@@ -9,98 +9,30 @@ import json
 
 # Create your views here.
 
-api_key = "FBfcGVZBIxMBGzTztAhR0VmEdrIcCxdn"
-api_key2 = "33392eacd2msha34644b78dc6760p185cecjsn3c8e231a16cf"
-rapidapi_host = "map-places.p.rapidapi.com"
+categories = "4d4b7104d754a06370d81259,4bf58dd8d48988d1e2931735,4bf58dd8d48988d18d941735,\
+    4bf58dd8d48988d11f941735,4bf58dd8d48988d18b941735,4bf58dd8d48988d189941735,56aa371be4b08b9a8d573550,\
+    63be6904847c3692a84b9bb5,4bf58dd8d48988d16a941735,4bf58dd8d48988d116941735,4bf58dd8d48988d179941735,\
+    4bf58dd8d48988d11e941735,4bf58dd8d48988d1d8941735,4bf58dd8d48988d1d5941735,4bf58dd8d48988d121941735,4bf58dd8d48988d11b941735,\
+    4bf58dd8d48988d143941735,50327c8591d4c4b30a586d5d,63be6904847c3692a84b9bb6,52e81612bcbc57f1066b7a0c,4bf58dd8d48988d16d941735,\
+    4bf58dd8d48988d1e0931735,4bf58dd8d48988d128941735,4d4b7105d754a06374d81259,503288ae91d4c4b30a586d67,4bf58dd8d48988d1c8941735,\
+    4bf58dd8d48988d10a941735,5f2c344a5b4c177b9a6dc011,4bf58dd8d48988d14e941735,4bf58dd8d48988d157941735,5f2c2b7db6d05514c7044837,\
+    4bf58dd8d48988d142941735,52e81612bcbc57f1066b7a03,4bf58dd8d48988d145941735,52af3aaa3cf9994f4e043bf0,52af3b813cf9994f4e043c04,\
+    4eb1bd1c3b7b55596b4a748f,4deefc054765f83613cdba6f,4bf58dd8d48988d111941735,4bf58dd8d48988d113941735,4bf58dd8d48988d149941735,\
+    4bf58dd8d48988d14a941735,4bf58dd8d48988d169941735,52e81612bcbc57f1066b7a01,5e179ee74ae8e90006e9a746,52e81612bcbc57f1066b7a02,\
+    52e81612bcbc57f1066b79f1,52e81612bcbc57f1066b79f4,4bf58dd8d48988d16c941735,4bf58dd8d48988d144941735,4bf58dd8d48988d154941735,\
+    4bf58dd8d48988d16e941735,4bf58dd8d48988d10f941735,5bae9231bedf3950379f89e1,4bf58dd8d48988d1c1941735,4bf58dd8d48988d1c0941735,\
+    4bf58dd8d48988d1ca941735,4bf58dd8d48988d1c5941735,4bf58dd8d48988d150941735,4bf58dd8d48988d1cc941735,4f04af1f2fb6e1c99f3db0bb,\
+    52f2ab2ebcbc57f1066b8b41,63be6904847c3692a84b9bb7,5267e4d9e4b0ec79466e48d1,5bae9231bedf3950379f89c5,63be6904847c3692a84b9bb8,\
+    4bf58dd8d48988d163941735,5fabfe3599ce226e27fe709a,4bf58dd8d48988d1fa931735,4bf58dd8d48988d1ee931735"
 
-categories = ["10000","13000","14000"]
-
-fields = ["fsq_id","name","geocodes","location","categories","closed_bucket","description","tel","email","website",
-        "social_media","hours","hours_popular","rating","popularity","price","menu","date_closed","photos","tastes"]
-
-api_url = "https://api.tomtom.com/search/"
-version = "2"
-language = "en-US"
-location_data = {}
-headers = {
-            "X-RapidAPI-Key": api_key2,
-            'X-RapidAPI-Host': rapidapi_host,
-       }
-
-# https://api.tomtom.com/search/2/poiCategories.json?language=en-US&key=*****
 
 
 def home(request):
-
-    return render(request, 'base.html')
-
-
-def save_location(request):
-    if request.method == 'POST':
-        data = request.POST
-        latitude = data.get('latitude')
-        longitude = data.get('longitude')
-
-        # Process location data (e.g., save to database)
-        location_data['latitude'] = latitude
-        location_data['longitude'] = longitude
-        print(location_data)
-
-        # Optionally, send a response back to the client
-
-        return JsonResponse({'Success': 'location saved successfully'}, status=200)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-
-def get_place_details(place_id):
-    # Construct API request URL with parameters
-    place_detail_api_url = "https://map-places.p.rapidapi.com/details/json"
-    details_params = {
-        "place_id": place_id,
+    results = get_places_nearby().get("results")
+    context = {
+        "places": results,
     }
-
-    # Make Place Detail API request
-    details_response = requests.get(place_detail_api_url, headers=headers, params=details_params)
-    if details_response.status_code == 200:
-        data_str = details_response.content.decode('utf-8')  # Decode byte data to string
-        data_dict = json.loads(data_str)  # Parse JSON string to dictionary
-
-        return data_dict   # Return place details
-    else:
-        # Return error message
-        return None
-
-
-def get_place_photos(photo_reference, maxheight, maxwidth):
-    # Construct API request URL with parameters
-    place_photo_api_url = "https://map-places.p.rapidapi.com/photo"
-    photo_params = {
-        "photo_reference": photo_reference,
-        "maxheight": maxheight,
-        "maxwidth": maxwidth
-    }
-
-    # Make Place Photo API request
-    photo_response = requests.get(place_photo_api_url, headers=headers, params=photo_params)
-
-    if photo_response.status_code == 200:
-        # Return the raw image data
-        return photo_response.content
-    else:
-        # Return an error message
-        return {'error': f"Error fetching place photo, status code: {photo_response.status_code}"}
-
-
-def recommend_places(request):
-    latitude = location_data["latitude"]
-    longitude = location_data["longitude"]
-    if latitude and longitude:
-        places = get_places_nearby(latitude, longitude)
-        print(places)
-        # Process and filter results as needed
-        return render(request, 'card.html', {'places': places})
-    return render(request, 'base.html')
+    return render(request, 'base.html', context)
 
 
 def user_signup(request):
@@ -157,3 +89,40 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+
+
+def get_place_details(request, place_id):
+    details_url = f'https://api.foursquare.com/v3/places/{place_id}'
+    headers = {
+        'Authorization': "fsq3DpPCdy4UqMmMs9u+pdWD9xUr8NpdjTOwFqdF/ru7b18=",
+        'Accept': 'application/json'
+    }
+    params = {
+        'query': '',
+        'radius': 5000,
+        'categories': categories,
+        'fields': "fsq_id,name,geocodes,location,categories,closed_bucket,description,tel,email,website,social_media,hours,hours_popular,rating,popularity,price,menu,date_closed,photos,tastes"
+    }
+    
+    details_response = requests.get(details_url, headers=headers, params=params)
+    
+    if details_response.status_code != 200:
+        return JsonResponse({"Error": "Place details not found"}, status=404)
+
+    place_details = details_response.json()
+
+    # Fetch place photos
+    photos_url = f'https://api.foursquare.com/v3/places/{place_id}/photos'
+    photos_response = requests.get(photos_url, headers=headers)
+    
+    photos = []
+    if photos_response.status_code == 200:
+        photos_data = photos_response.json()
+        photos = [photo['prefix'] + 'original' + photo['suffix'] for photo in photos_data]
+
+    context = {
+        'place': place_details,
+        'photos': photos,
+    }
+
+    return render(request, 'place_details.html', context)

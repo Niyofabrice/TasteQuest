@@ -1,52 +1,34 @@
 import requests
-from django.conf import settings
-from django.core.cache import cache
 
-def get_places_nearby(latitude, longitude, query='', radius=1000):
-    cache_key = f"places_{latitude}_{longitude}_{query}_{radius}"
-    cached_result = cache.get(cache_key)
-    if cached_result:
-        return cached_result
+
+headers = {
+    "accept": "application/json",
+    "Authorization": "fsq3DpPCdy4UqMmMs9u+pdWD9xUr8NpdjTOwFqdF/ru7b18="
+}
+
+categories = "4d4b7104d754a06370d81259,4bf58dd8d48988d1e2931735,4bf58dd8d48988d18d941735,\
+    4bf58dd8d48988d11f941735,4bf58dd8d48988d18b941735,4bf58dd8d48988d189941735,56aa371be4b08b9a8d573550,\
+    63be6904847c3692a84b9bb5,4bf58dd8d48988d16a941735,4bf58dd8d48988d116941735,4bf58dd8d48988d179941735,\
+    4bf58dd8d48988d11e941735,4bf58dd8d48988d1d8941735,4bf58dd8d48988d1d5941735,4bf58dd8d48988d121941735,4bf58dd8d48988d11b941735,\
+    4bf58dd8d48988d143941735,50327c8591d4c4b30a586d5d,63be6904847c3692a84b9bb6,52e81612bcbc57f1066b7a0c,4bf58dd8d48988d16d941735,\
+    4bf58dd8d48988d1e0931735,4bf58dd8d48988d128941735,4d4b7105d754a06374d81259,503288ae91d4c4b30a586d67,4bf58dd8d48988d1c8941735,\
+    4bf58dd8d48988d10a941735,5f2c344a5b4c177b9a6dc011,4bf58dd8d48988d14e941735,4bf58dd8d48988d157941735,5f2c2b7db6d05514c7044837,\
+    4bf58dd8d48988d142941735,52e81612bcbc57f1066b7a03,4bf58dd8d48988d145941735,52af3aaa3cf9994f4e043bf0,52af3b813cf9994f4e043c04,\
+    4eb1bd1c3b7b55596b4a748f,4deefc054765f83613cdba6f,4bf58dd8d48988d111941735,4bf58dd8d48988d113941735,4bf58dd8d48988d149941735,\
+    4bf58dd8d48988d14a941735,4bf58dd8d48988d169941735,52e81612bcbc57f1066b7a01,5e179ee74ae8e90006e9a746,52e81612bcbc57f1066b7a02,\
+    52e81612bcbc57f1066b79f1,52e81612bcbc57f1066b79f4,4bf58dd8d48988d16c941735,4bf58dd8d48988d144941735,4bf58dd8d48988d154941735,\
+    4bf58dd8d48988d16e941735,4bf58dd8d48988d10f941735,5bae9231bedf3950379f89e1,4bf58dd8d48988d1c1941735,4bf58dd8d48988d1c0941735,\
+    4bf58dd8d48988d1ca941735,4bf58dd8d48988d1c5941735,4bf58dd8d48988d150941735,4bf58dd8d48988d1cc941735,4f04af1f2fb6e1c99f3db0bb,\
+    52f2ab2ebcbc57f1066b8b41,63be6904847c3692a84b9bb7,5267e4d9e4b0ec79466e48d1,5bae9231bedf3950379f89c5,63be6904847c3692a84b9bb8,\
+    4bf58dd8d48988d163941735,5fabfe3599ce226e27fe709a,4bf58dd8d48988d1fa931735,4bf58dd8d48988d1ee931735"
+
+def get_places_nearby(query='', radius=5000):
     endpoint_url = 'https://api.foursquare.com/v3/places/nearby'
     params = {
-        'll': f'{latitude},{longitude}',
         'query': query,
         'radius': radius,
-        'client_id': settings.FOURSQUARE_CLIENT_ID,
-        'client_secret': settings.FOURSQUARE_CLIENT_SECRET,
-        'v': '20210101'  # API version
+        'categories': categories,
+        'fields': "fsq_id,name,geocodes,location,categories,closed_bucket,description,tel,email,website,social_media,hours,hours_popular,rating,popularity,price,menu,date_closed,photos,tastes"
     }
-    response = requests.get(endpoint_url, params=params)
-    places = response.json().get('response', {}).get('places', [])
-    print(places)
-
-    # Enhance place data with photos
-    for place in places:
-        place['photos'] = get_place_photos(place['id'])
-
-    cache.set(cache_key, response.json(), timeout=3600)  # Cache for 1 hour
-    print(response.json)
+    response = requests.get(endpoint_url, headers=headers, params=params)
     return response.json()
-
-def get_place_photos(place_id, max_photos=5):
-    cache_key = f"place_photos_{place_id}"
-    cached_photos = cache.get(cache_key)
-    if cached_photos:
-        return cached_photos
-    endpoint_url = f"https://api.foursquare.com/v2/places/{place_id}/photos"
-    params = {
-        "client_id": settings.FOURSQUARE_CLIENT_ID,
-        "client_secret": settings.FOURSQUARE_CLIENT_SECRET,
-        "v": "20210101"  # API version
-    }
-    response = requests.get(endpoint_url, params=params)
-    data = response.json()
-    
-    photos = []
-    if "response" in data and "photos" in data["response"]:
-        items = data["response"]["photos"]["items"]
-        for item in items[:max_photos]:
-            photo_url = f"{item['prefix']}300x300{item['suffix']}"  # Adjust size as needed
-            photos.append(photo_url)
-    cache.set(cache_key, photos, timeout=3600) # Cashe for 1 hour
-    return photos

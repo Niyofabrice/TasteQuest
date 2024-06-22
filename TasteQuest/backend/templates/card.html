@@ -3,32 +3,34 @@
 
 
 <div class="cards-container">
-  {% for place in places %}
+  {% for place in places%}
   <div class="card">
-    <img src="{{place.photo_url}}" class="card-img-top" alt="...">
+    <img src={{photos.0}} + place.photos.0.suffix class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{place.name}}</h5>
       <div class="restaurant-details">
-        <span class="cuisine">{{place.cuisine}}</span>
-        <span class="price-range">${{place.price_range}}</span>
+        {% for category in place.categories%}
+          <span class="cuisine">{{category.short_name}}</span>
+        {% endfor %}
+        <span class="price-range">${{place.price}}</span>
       </div>
       <p class="card-text">{{place.description}}</p>
       <div class="card-details">
         <div class="location">
           <i class="fas fa-map-marker-alt"></i>
-          <span>{{place.location.address}}</span>
+          <span>{{place.location.formatted_address}}</span>
         </div>
         <div class="reviews">
           <i class="fas fa-star"></i>
-          <span>4.5 (120 reviews)</span>
+          <span>{{place.rating}}</span>
         </div>
         <div class="phone">
           <i class="fas fa-phone"></i>
-          <span>(123) 456-7890</span>
+          <span>{{place.hours.open_now}}</span>
         </div>
       </div>
       <div class="view_place_btn">
-        <a href="#" class="btn btn-primary">View Place</a>
+        <a href="{% url 'place_details' place_id=place.fsq_id %}" class="btn btn-primary">View Place</a>
       </div>
     </div>
   </div>

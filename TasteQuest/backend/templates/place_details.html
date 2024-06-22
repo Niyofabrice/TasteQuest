@@ -1,0 +1,85 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/place_details.css' %}">
+{% include "navbar.html" %}
+
+
+<div class="place-container">
+    <header class="place-header" style="background-image: url('{{ photos.0 }}');">
+        <div class="overlay"></div>
+        <h1>{{ place.name }}</h1>
+        {% if place.rating %}
+            <div class="rating">
+                <span class="stars" style="--rating: {{ place.rating|floatformat:1 }};"></span>
+                <span class="rating-text">{{ place.rating|floatformat:1 }} / 10</span>
+            </div>
+        {% endif %}
+    </header>
+
+    <div class="place-content">
+        <section class="main-info">
+            <div class="address">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>{{ place.location.formatted_address }}</p>
+            </div>
+            {% if place.tel %}
+                <div class="phone">
+                    <i class="fas fa-phone"></i>
+                    <p>{{ place.tel }}</p>
+                </div>
+            {% endif %}
+            {% if place.website %}
+                <div class="website">
+                    <i class="fas fa-globe"></i>
+                    <a href="{{ place.website }}" target="_blank">Visit Website</a>
+                </div>
+            {% endif %}
+        </section>
+
+        {% if place.categories %}
+            <section class="categories">
+                <h2>Categories</h2>
+                <div class="category-tags">
+                    {% for category in place.categories %}
+                        <span class="category-tag">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if place.hours_popular %}
+            <section class="hours">
+                <h2>Hours</h2>
+                <ul>
+                {% for day in place.hours_popular %}
+                    <li><strong>{{ day.day }}:</strong> {{ day.open }} - {{ day.close }}</li>
+                {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if place.description %}
+            <section class="description">
+                <h2>About</h2>
+                <p>{{ place.description }}</p>
+            </section>
+        {% endif %}
+
+        {% if place.menu %}
+            <section class="menu">
+                <h2>Menu</h2>
+                <a href="{{ place.menu }}" target="_blank" class="menu-button">View Menu</a>
+            </section>
+        {% endif %}
+
+        {% if photos|length > 1 %}
+            <section class="photo-gallery">
+                <h2>Photos</h2>
+                <div class="gallery-grid">
+                    {% for photo_url in photos|slice:"1:" %}
+                        <img src="{{ photo_url }}" alt="{{ place.name }}" class="gallery-image">
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+    </div>
+</div>
