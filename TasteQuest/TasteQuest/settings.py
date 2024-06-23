@@ -132,6 +132,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assests')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-FOURSQUARE_CLIENT_ID = '5YNZIVUP5KKEZ30D5XQNOLHKNOGBUZMT1BGUF31RQ1FQM0G5'
-FOURSQUARE_CLIENT_SECRET = 'TH0DKLKQ2NYFUJXAUQAH1S23MUDUVXIUWQ42L3SIBENQZMPW'
+file_path = os.path.join(BASE_DIR, 'TasteQuest', 'secret_keys.txt')
+keys = {}
+with open(file_path, 'r') as f:
+    for line in f:
+        key, value = line.strip().split('=')
+        keys[key] = value
 
+FOURSQUARE_CLIENT_ID = keys.get('FOURSQUARE_CLIENT_ID')
+FOURSQUARE_CLIENT_SECRET = keys.get('FOURSQUARE_CLIENT_SECRET')
