@@ -132,7 +132,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assests')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-file_path = os.path.join(BASE_DIR, 'TasteQuest', 'secret_keys.txt')
+file_path = os.path.join(BASE_DIR, 'secret_keys.txt')
 keys = {}
 with open(file_path, 'r') as f:
     for line in f:

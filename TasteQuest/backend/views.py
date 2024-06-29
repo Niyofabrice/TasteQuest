@@ -32,6 +32,10 @@ def home(request):
     context = {
         "places": results,
     }
+
+    photos = []
+    for place in results:
+        photos.append(place.photos)
     return render(request, 'base.html', context)
 
 
