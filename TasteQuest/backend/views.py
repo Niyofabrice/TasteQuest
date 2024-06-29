@@ -29,14 +29,13 @@ categories = "4d4b7104d754a06370d81259,4bf58dd8d48988d1e2931735,4bf58dd8d48988d1
 
 def home(request):
     results = get_places_nearby().get("results")
+
     context = {
         "places": results,
     }
 
-    photos = []
-    for place in results:
-        photos.append(place.photos)
-    return render(request, 'base.html', context)
+    return render(request, "base.html", context)
+    
 
 
 def user_signup(request):
@@ -125,7 +124,7 @@ def get_place_details(request, place_id):
         photos = [photo['prefix'] + 'original' + photo['suffix'] for photo in photos_data]
 
     context = {
-        'place': place_details,
+        'place_details': place_details,
         'photos': photos,
     }
 

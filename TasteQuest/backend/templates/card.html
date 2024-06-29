@@ -5,14 +5,12 @@
 <div class="cards-container">
   {% for place in places%}
   <div class="card">
-    <img src={{photos.0}} + place.photos.0.suffix class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{place.name}}</h5>
       <div class="restaurant-details">
         {% for category in place.categories%}
           <span class="cuisine">{{category.short_name}}</span>
         {% endfor %}
-        <span class="price-range">${{place.price}}</span>
       </div>
       <p class="card-text">{{place.description}}</p>
       <div class="card-details">
@@ -25,12 +23,20 @@
           <span>{{place.rating}}</span>
         </div>
         <div class="phone">
-          <i class="fas fa-phone"></i>
-          <span>{{place.hours.open_now}}</span>
+          <i class="fas fa-fire"></i>
+          <span>
+            {% if place.popularity >= 0.75 %}
+              Very popular
+            {% elif place.popularity >= 0.50 %}
+              Fairly popular
+            {% else %}
+              popular
+            {% endif %}
+          </span>
         </div>
       </div>
       <div class="view_place_btn">
-        <a href="{% url 'place_details' place_id=place.fsq_id %}" class="btn btn-primary">View Place</a>
+        <a href="{% url 'place_details' place_id=place.fsq_id %}" class="btn btn-primary">View Place Details</a>
       </div>
     </div>
   </div>

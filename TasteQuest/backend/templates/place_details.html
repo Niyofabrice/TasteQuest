@@ -4,13 +4,13 @@
 
 
 <div class="place-container">
-    <header class="place-header" style="background-image: url('{{ photos.0 }}');">
+    <header class="place-header" style="background-image: url('{{ photos.1 }}');">
         <div class="overlay"></div>
-        <h1>{{ place.name }}</h1>
-        {% if place.rating %}
+        <h1>{{ place_details.name }}</h1>
+        {% if place_details.rating %}
             <div class="rating">
-                <span class="stars" style="--rating: {{ place.rating|floatformat:1 }};"></span>
-                <span class="rating-text">{{ place.rating|floatformat:1 }} / 10</span>
+                <span class="stars" style="--rating: {{ place_details.rating|floatformat:1 }};"></span>
+                <span class="rating-text">{{ place_details.rating|floatformat:1 }} / 10</span>
             </div>
         {% endif %}
     </header>
@@ -19,55 +19,55 @@
         <section class="main-info">
             <div class="address">
                 <i class="fas fa-map-marker-alt"></i>
-                <p>{{ place.location.formatted_address }}</p>
+                <p>{{ place_details.location.formatted_address }}</p>
             </div>
-            {% if place.tel %}
+            {% if place_details.tel %}
                 <div class="phone">
                     <i class="fas fa-phone"></i>
-                    <p>{{ place.tel }}</p>
+                    <p>{{ place_details.tel }}</p>
                 </div>
             {% endif %}
-            {% if place.website %}
+            {% if place_details.website %}
                 <div class="website">
                     <i class="fas fa-globe"></i>
-                    <a href="{{ place.website }}" target="_blank">Visit Website</a>
+                    <a href="{{ place_details.website }}" target="_blank">Visit Website</a>
                 </div>
             {% endif %}
         </section>
 
-        {% if place.categories %}
+        {% if place_details.categories %}
             <section class="categories">
                 <h2>Categories</h2>
                 <div class="category-tags">
-                    {% for category in place.categories %}
+                    {% for category in place_details.categories %}
                         <span class="category-tag">{{ category.name }}</span>
                     {% endfor %}
                 </div>
             </section>
         {% endif %}
 
-        {% if place.hours_popular %}
+        {% if place_details.hours_popular %}
             <section class="hours">
                 <h2>Hours</h2>
                 <ul>
-                {% for day in place.hours_popular %}
+                {% for day in place_details.hours_popular %}
                     <li><strong>{{ day.day }}:</strong> {{ day.open }} - {{ day.close }}</li>
                 {% endfor %}
                 </ul>
             </section>
         {% endif %}
 
-        {% if place.description %}
+        {% if place_details.description %}
             <section class="description">
                 <h2>About</h2>
-                <p>{{ place.description }}</p>
+                <p>{{ place_details.description }}</p>
             </section>
         {% endif %}
 
-        {% if place.menu %}
+        {% if place_details.menu %}
             <section class="menu">
                 <h2>Menu</h2>
-                <a href="{{ place.menu }}" target="_blank" class="menu-button">View Menu</a>
+                <a href="{{ place_details.menu }}" target="_blank" class="menu-button">View Menu</a>
             </section>
         {% endif %}
 
@@ -76,7 +76,7 @@
                 <h2>Photos</h2>
                 <div class="gallery-grid">
                     {% for photo_url in photos|slice:"1:" %}
-                        <img src="{{ photo_url }}" alt="{{ place.name }}" class="gallery-image">
+                        <img src="{{ photo_url }}" alt="{{ place_details.name }}" class="gallery-image">
                     {% endfor %}
                 </div>
             </section>
